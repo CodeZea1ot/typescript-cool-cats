@@ -1,0 +1,35 @@
+.CatsGrid {
+    .cats-available {
+        z-index: 3;
+        position: relative;
+    }
+    .cats-bag {
+        position: relative;
+        background-color: lighten(#c1d4e3, 15%);
+        z-index: 1;
+        .watermark-bag {
+            position: absolute;
+            top: -217px;
+            right: 0;
+            z-index: -1;
+            color: #dae7ef;
+            font-size: 20rem;
+        }
+    }
+    .cat-controls {
+        background-color: white;
+        position: fixed;
+        bottom: -48px;
+        z-index: 999;
+        padding: 1.3rem;
+        width: 100%;
+        box-shadow: 0 -1px 10px lighten(#c1d4e3, 10%);
+        .buttons-wrapper {
+            margin: 0 auto;
+            display: table;
+            button {
+                margin-right: 1rem;
+            }
+        }
+    }
+}
