@@ -12,7 +12,7 @@ const CatsGrid = () => {
     const [selectedCats, setSelectedCats] = useState<number[]>([])
     const [bag, setBag] = useState<CatData[]>([])
 
-    function handleSelectCat(id: number) {
+    const handleSelectCat = (id: number) => {
         if (selectedCats.includes(id)) {
             setSelectedCats(selectedCats.filter((catId) => catId !== id))
         } else {
