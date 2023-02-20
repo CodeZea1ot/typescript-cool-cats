@@ -115,7 +115,6 @@ const CatsGrid = () => {
                                     />
                                 ))}
                             </div>
-                            <div className="cat-controls my-5"></div>
                         </>
                     )}
                 </div>
