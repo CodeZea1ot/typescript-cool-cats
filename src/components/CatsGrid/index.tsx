@@ -101,36 +101,30 @@ const CatsGrid = () => {
                     {bag.length === 0 ? (
                         <p>Your bag is empty.</p>
                     ) : (
-                        <>
-                            <div className="row">
-                                {bag.map((cat) => (
-                                    <CatCard
-                                        key={cat.id}
-                                        cat={cat}
-                                        onSelect={handleSelectCat}
-                                        onVote={handleVote}
-                                        isSelected={selectedCats.includes(
-                                            cat.id
-                                        )}
-                                    />
-                                ))}
-                            </div>
-                        </>
+                        <div className="row">
+                            {bag.map((cat) => (
+                                <CatCard
+                                    key={cat.id}
+                                    cat={cat}
+                                    onSelect={handleSelectCat}
+                                    onVote={handleVote}
+                                    isSelected={selectedCats.includes(cat.id)}
+                                />
+                            ))}
+                        </div>
                     )}
                 </div>
             </section>
             <section className="cat-controls my-5">
                 <div className="buttons-wrapper">
                     {cats.length !== 0 && (
-                        <>
-                            <button
-                                className="btn btn-primary"
-                                onClick={handleAddToBag}
-                                disabled={selectedCats.length ? false : true}
-                            >
-                                Add to Bag
-                            </button>
-                        </>
+                        <button
+                            className="btn btn-primary"
+                            onClick={handleAddToBag}
+                            disabled={selectedCats.length ? false : true}
+                        >
+                            Add to Bag
+                        </button>
                     )}
                     {bag.length >= 1 && (
                         <button
