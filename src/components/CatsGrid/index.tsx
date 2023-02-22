@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import CatCard from '../CatCard'
 import { GiSwapBag } from 'react-icons/gi'
 import catsData from '../../data/cats'
@@ -33,16 +33,14 @@ const CatsGrid = () => {
         }
     }
 
-    const updateVoteState = (
-        catID: number,
-        catObj: CatData,
-        upvote: boolean,
-        state: CatData[]
-    ) => {
-        upvote ? catObj.votes++ : catObj.votes > 0 && catObj.votes--
-        state[state.findIndex((c) => c.id === catID)].votes = catObj.votes
-        return state
-    }
+    const updateVoteState = useCallback(
+        (catID: number, catObj: CatData, upvote: boolean, state: CatData[]) => {
+            upvote ? catObj.votes++ : catObj.votes > 0 && catObj.votes--
+            state[state.findIndex((c) => c.id === catID)].votes = catObj.votes
+            return state
+        },
+        []
+    )
 
     const handleAddToBag = () => {
         setBag((prevBag) =>
