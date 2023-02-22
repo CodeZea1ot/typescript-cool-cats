@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { FaCheck } from 'react-icons/fa'
 import './index.scss'
 import { CatData } from '../../types/cats'
@@ -6,19 +7,20 @@ type CatCardProps = {
     cat: CatData
     onSelect: (id: number) => void
     onVote: (id: number, upvote: boolean) => void
-    isSelected: boolean
 }
 
 const CatCard = (props: CatCardProps) => {
-    const { cat, onSelect, isSelected } = props
+    const [selected, setSelected] = useState(false)
+    const { cat, onSelect } = props
 
     const handleSelect = () => {
+        setSelected(!selected)
         onSelect(cat.id)
     }
 
     return (
         <div className="CatCard col-sm-12 col-md-6 col-lg-4 mb-4">
-            <div className={`card ${isSelected ? 'selected' : ''}`}>
+            <div className={`card ${selected ? 'selected' : ''}`}>
                 <img
                     className="img card-img-top"
                     src={cat.imageUrl}
@@ -36,7 +38,7 @@ const CatCard = (props: CatCardProps) => {
                         className="btn btn-secondary"
                         onClick={handleSelect}
                     >
-                        {isSelected ? 'Unselect' : 'Select'}
+                        {selected ? 'Unselect' : 'Select'}
                     </button>
                     <FaCheck />
                 </div>

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import CatCard from '../CatCard'
 import { GiSwapBag } from 'react-icons/gi'
 import catsData from '../../data/cats'
@@ -23,26 +23,34 @@ const CatsGrid = () => {
     const [selectedCats, setSelectedCats] = useState<number[]>([])
     const [bag, setBag] = useState<CatData[]>([])
 
-    const handleSelectCat = (id: number) => {
-        if (selectedCats.includes(id)) {
-            setSelectedCats(selectedCats.filter((catId) => catId !== id))
-        } else {
-            setSelectedCats([...selectedCats, id])
-        }
-    }
+    const handleSelectCat = useCallback(
+        (id: number) => {
+            if (selectedCats.includes(id)) {
+                setSelectedCats(selectedCats.filter((catId) => catId !== id))
+            } else {
+                setSelectedCats([...selectedCats, id])
+            }
+        },
+        [selectedCats]
+    )
 
-    const handleVote = (catID: number, upvote: boolean) => {
-        const objFoundInCats = cats.find((cat) => cat.id === catID)
-        const objFoundInBag = bag.find((cat) => cat.id === catID)
+    const handleVote = useCallback(
+        (catID: number, upvote: boolean) => {
+            const objFoundInCats = cats.find((cat) => cat.id === catID)
+            const objFoundInBag = bag.find((cat) => cat.id === catID)
 
-        if (objFoundInCats) {
-            setCats(updateVoteState(catID, objFoundInCats, upvote, [...cats]))
-        } else if (objFoundInBag) {
-            setBag(updateVoteState(catID, objFoundInBag, upvote, [...bag]))
-        } else {
-            console.error('Could not find cat while handling vote')
-        }
-    }
+            if (objFoundInCats) {
+                setCats(
+                    updateVoteState(catID, objFoundInCats, upvote, [...cats])
+                )
+            } else if (objFoundInBag) {
+                setBag(updateVoteState(catID, objFoundInBag, upvote, [...bag]))
+            } else {
+                console.error('Could not find cat while handling vote')
+            }
+        },
+        [cats, bag]
+    )
 
     const handleAddToBag = () => {
         setBag((prevBag) =>
@@ -70,6 +78,38 @@ const CatsGrid = () => {
         setSelectedCats([])
     }
 
+    const memoizedCatCards = useMemo(
+        () => (
+            <div className="row">
+                {cats.map((cat) => (
+                    <CatCard
+                        key={cat.id}
+                        cat={cat}
+                        onSelect={handleSelectCat}
+                        onVote={handleVote}
+                    />
+                ))}
+            </div>
+        ),
+        [cats, handleSelectCat, handleVote]
+    )
+
+    const memoizedBagCards = useMemo(
+        () => (
+            <div className="row">
+                {bag.map((cat) => (
+                    <CatCard
+                        key={cat.id}
+                        cat={cat}
+                        onSelect={handleSelectCat}
+                        onVote={handleVote}
+                    />
+                ))}
+            </div>
+        ),
+        [bag, handleSelectCat, handleVote]
+    )
+
     return (
         <div className="CatsGrid my-5">
             <section className="cats-available">
@@ -78,17 +118,7 @@ const CatsGrid = () => {
                     {cats.length === 0 && (
                         <p>All of the cats are in the bag!</p>
                     )}
-                    <div className="cat-grid row">
-                        {cats.map((cat) => (
-                            <CatCard
-                                key={cat.id}
-                                cat={cat}
-                                onSelect={handleSelectCat}
-                                onVote={handleVote}
-                                isSelected={selectedCats.includes(cat.id)}
-                            />
-                        ))}
-                    </div>
+                    <div className="cat-grid row">{memoizedCatCards}</div>
                 </div>
             </section>
 
@@ -101,17 +131,7 @@ const CatsGrid = () => {
                     {bag.length === 0 ? (
                         <p>Your bag is empty.</p>
                     ) : (
-                        <div className="row">
-                            {bag.map((cat) => (
-                                <CatCard
-                                    key={cat.id}
-                                    cat={cat}
-                                    onSelect={handleSelectCat}
-                                    onVote={handleVote}
-                                    isSelected={selectedCats.includes(cat.id)}
-                                />
-                            ))}
-                        </div>
+                        memoizedBagCards
                     )}
                 </div>
             </section>
