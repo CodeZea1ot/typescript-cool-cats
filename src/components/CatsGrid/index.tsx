@@ -7,6 +7,17 @@ import { CatData } from '../../types/cats'
 
 const initialCats: CatData[] = catsData
 
+const updateVoteState = (
+    catID: number,
+    catObj: CatData,
+    upvote: boolean,
+    state: CatData[]
+) => {
+    upvote ? catObj.votes++ : catObj.votes > 0 && catObj.votes--
+    state[state.findIndex((c) => c.id === catID)].votes = catObj.votes
+    return state
+}
+
 const CatsGrid = () => {
     const [cats, setCats] = useState(initialCats)
     const [selectedCats, setSelectedCats] = useState<number[]>([])
@@ -32,15 +43,6 @@ const CatsGrid = () => {
             console.error('Could not find cat while handling vote')
         }
     }
-
-    const updateVoteState = useCallback(
-        (catID: number, catObj: CatData, upvote: boolean, state: CatData[]) => {
-            upvote ? catObj.votes++ : catObj.votes > 0 && catObj.votes--
-            state[state.findIndex((c) => c.id === catID)].votes = catObj.votes
-            return state
-        },
-        []
-    )
 
     const handleAddToBag = () => {
         setBag((prevBag) =>
