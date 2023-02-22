@@ -4,7 +4,7 @@ import { CatData } from '../../types/cats'
 
 type CatCardProps = {
     cat: CatData
-    onSelect: (id: number, selected: boolean) => void
+    onSelect: (id: number) => void
     onVote: (id: number, upvote: boolean) => void
     isSelected: boolean
 }
@@ -13,7 +13,7 @@ const CatCard = (props: CatCardProps) => {
     const { cat, onSelect, isSelected } = props
 
     const handleSelect = () => {
-        onSelect(cat.id, !isSelected)
+        onSelect(cat.id)
     }
 
     return (
